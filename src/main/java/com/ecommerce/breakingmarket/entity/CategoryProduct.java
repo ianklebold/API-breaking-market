@@ -19,7 +19,7 @@ public class CategoryProduct {
     private Long id;
     
     @NotEmpty
-    @Column(name = "name", nullable = false, updatable = false)
+    @Column(name = "name", nullable = false, updatable = true)
     private String name;
 
     /*Relationsip!!!*/
