@@ -10,7 +10,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
@@ -55,19 +54,25 @@ public class User {
     @OneToMany(mappedBy = "user",cascade = {CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.REFRESH}, orphanRemoval = true)
     private List<Cart> cart = new ArrayList<Cart>();
 
-    @ManyToOne(cascade={})
-    private City city;
+    @Column(name = "city", nullable = false, updatable = true)
+    private String city;
 
-    @ManyToOne(cascade={})
-    private Country country;
+    @Column(name = "country", nullable = false, updatable = true)
+    private String country;
 
-    @ManyToOne(cascade={})
-    private State state;
+    @Column(name = "state", nullable = false, updatable = true)
+    private String state;
 
     /*Constructors!!! */
 
-    public User(Long id, String name, String surname, String email, @Size(min = 8) String password,
-    LocalDateTime registration, List<Cart> cart, City city, Country country, State state) {
+
+    public User(){}
+    
+
+
+    public User(Long id, @NotEmpty String name, @NotEmpty String surname, @NotEmpty String email,
+            @NotEmpty @Size(min = 8) String password, @NotEmpty LocalDateTime registration, List<Cart> cart,
+            String city, String country, String state) {
         this.id = id;
         this.name = name;
         this.surname = surname;
@@ -80,19 +85,18 @@ public class User {
         this.state = state;
     }
 
-    public User(){}
-    
 
 
     /*Methods!!*/
+
+    
+
     /**
      * @return Long return the id
      */
     public Long getId() {
         return id;
     }
-
-
 
     /**
      * @param id the id to set
@@ -169,6 +173,62 @@ public class User {
      */
     public void setRegistration(LocalDateTime registration) {
         this.registration = registration;
+    }
+
+    /**
+     * @return List<Cart> return the cart
+     */
+    public List<Cart> getCart() {
+        return cart;
+    }
+
+    /**
+     * @param cart the cart to set
+     */
+    public void setCart(List<Cart> cart) {
+        this.cart = cart;
+    }
+
+    /**
+     * @return String return the city
+     */
+    public String getCity() {
+        return city;
+    }
+
+    /**
+     * @param city the city to set
+     */
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    /**
+     * @return String return the country
+     */
+    public String getCountry() {
+        return country;
+    }
+
+    /**
+     * @param country the country to set
+     */
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    /**
+     * @return String return the state
+     */
+    public String getState() {
+        return state;
+    }
+
+    /**
+     * @param state the state to set
+     */
+    public void setState(String state) {
+        this.state = state;
     }
 
 }
