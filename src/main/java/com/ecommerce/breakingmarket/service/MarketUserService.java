@@ -36,6 +36,11 @@ public class MarketUserService {
     }
 
     public ArrayList<User> getAllUsers(){
+
+        for (User usuario : (ArrayList<User>) userRepository.findAll() ) {
+            usuario.setPassword(" ");
+            usuario.setCart(null);
+        }
         return (ArrayList<User>) userRepository.findAll();
     }
 
