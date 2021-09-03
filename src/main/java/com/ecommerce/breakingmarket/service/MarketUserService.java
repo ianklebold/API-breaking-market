@@ -19,16 +19,11 @@ public class MarketUserService {
 
     public User newUser(User user){
 
-        System.out.println("Estoy en el service");
-        System.out.println(user.getEmail());
-        System.out.println(user.getPassword());
 
         if (user.getPassword().length()>=8 && validateEmail(user.getEmail())) {
-            System.out.println("Todo bien");
 
                 return userRepository.save(user);
         }else{
-            System.out.println("Todo mal");
 
             return null;
         }
@@ -56,8 +51,16 @@ public class MarketUserService {
         
         user.setId(foundUser.get().getId());
         user.setRegistration(foundUser.get().getRegistration());
+        user.setCart(foundUser.get().getCart());
 
-        return userRepository.save(user);
+        if (user.getPassword().length()>=8 && validateEmail(user.getEmail())) {
+
+            return userRepository.save(user);
+        }else{
+
+            return null;
+        }
+
     }
 
     public static Boolean validateEmail(String email)

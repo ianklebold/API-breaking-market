@@ -55,18 +55,28 @@ public class UserController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public void deleteUser(@PathVariable(name="id") Long id ){
+    public ResponseEntity<String> deleteUser(@PathVariable(name="id") Long id ){
         /**
          * Eliminar un usuario
          * 
          *  --> Eliminar un usuario implica eliminar todos sus carritos.
          */
         Optional<User> user = marketUserService.getUserById(id);
-        marketUserService.deleteUser(user.get());
+        if (user.isPresent()){
+            marketUserService.deleteUser(user.get());
+            return new ResponseEntity<>("Usuario "+id+" Eliminado con exito", 
+                                        HttpStatus.OK);
+            
+        }else{
+            return new ResponseEntity<>("ERROR : 404 Usuario "+id+" No encontrado", 
+                                        HttpStatus.NOT_FOUND);
+
+        }
+        
     }
 
-    @PutMapping(value="/update/{id}")
-    public User updateUser(@PathVariable(name = "id") Long id, @RequestBody User user) {
+    @PutMapping("/update/{id}")
+    public  ResponseEntity<User> updateUser(@PathVariable(name = "id") Long id, @RequestBody User user) {
         /**
          * Actualizar los datos de un usuario
          * 
@@ -75,8 +85,14 @@ public class UserController {
          */
         
         Optional<User> foundUser = marketUserService.getUserById(id);
-        user.setId(id);
-        return marketUserService.updateUser(user, foundUser);
+
+        if(marketUserService.updateUser(user, foundUser) == null){
+
+            return new ResponseEntity<>(user, HttpStatus.EXPECTATION_FAILED);
+        }else{
+
+            return new ResponseEntity<>(user, HttpStatus.OK);
+        }
 
     }
     
