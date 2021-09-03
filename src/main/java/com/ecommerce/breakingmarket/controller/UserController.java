@@ -7,7 +7,8 @@ import javax.validation.Valid;
 
 import com.ecommerce.breakingmarket.entity.User;
 import com.ecommerce.breakingmarket.service.MarketUserService;
-
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -26,15 +28,24 @@ public class UserController {
     MarketUserService marketUserService;
     
     @PostMapping("/newuser")
-    public User postNewUser(@Valid @RequestBody User user) {
+ 
+    public ResponseEntity<User> postNewUser(@Valid @RequestBody User user) {
         /**
          * Para crear un nuevo usuario
          */
-        return marketUserService.newUser(user);
+         System.out.println("Estoy en el controller");
+
+        if(marketUserService.newUser(user) == null){
+
+            return new ResponseEntity<>(user, HttpStatus.EXPECTATION_FAILED);
+        }else{
+            return new ResponseEntity<>(user, HttpStatus.CREATED);
+        }
 
     }
 
     @GetMapping("/alluser")
+    @ResponseStatus(HttpStatus.OK)
     public ArrayList<User> getAllUser() {
         /**
          * Obtener todos los usuarios
