@@ -9,14 +9,12 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumns;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.validation.constraints.NotEmpty;
 import javax.persistence.JoinColumn;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -62,6 +60,7 @@ public class Product {
     name = "product_whit_category", 
     joinColumns = @JoinColumn(name = "product_id"), 
     inverseJoinColumns = @JoinColumn(name = "category_id"))
+    @Column(name = "category", updatable = true, nullable = true)
     private List<CategoryProduct> categories = new ArrayList<CategoryProduct>();
 
     /*Constructors!!!*/
@@ -198,16 +197,16 @@ public class Product {
     }
 
     /**
-     * @return List<CategoryProduct> return the cart
+     * @return List<CategoryProduct> return the Category
      */
-    public List<CategoryProduct> getCart() {
+    public List<CategoryProduct> getCategory() {
         return categories;
     }
 
     /**
-     * @param categories the cart to set
+     * @param categories the Category to set
      */
-    public void setCart(List<CategoryProduct> categories) {
+    public void setCategories(List<CategoryProduct> categories) {
         this.categories = categories;
     }
 

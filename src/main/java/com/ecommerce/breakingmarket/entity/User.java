@@ -15,6 +15,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -38,7 +39,9 @@ public class User {
     @Column(name = "email", nullable = false, updatable = true, unique = true)
     private String email;
 
+    
     @NotEmpty
+    @JsonIgnore
     @Column(name = "password", nullable = false, updatable = true)
     @Size(min=8)
     private String password;

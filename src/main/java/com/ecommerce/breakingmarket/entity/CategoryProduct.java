@@ -11,6 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.validation.constraints.NotEmpty;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class CategoryProduct {
 
@@ -23,6 +25,7 @@ public class CategoryProduct {
     private String name;
 
     /*Relationsip!!!*/
+    @JsonIgnore
     @ManyToMany(mappedBy = "categories")
     private List<Product> products = new ArrayList<Product>();
 
@@ -30,7 +33,7 @@ public class CategoryProduct {
 
     /*Constructors!!!*/
     public CategoryProduct() {}
-
+    
     public CategoryProduct(Long id, String name, List<Product> products) {
         this.id = id;
         this.name = name;

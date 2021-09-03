@@ -1,5 +1,6 @@
 package com.ecommerce.breakingmarket.entity;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -44,6 +45,9 @@ public class LineProduct {
     
     /*Methods!!! */
 
+
+
+
     /**
      * @return Long return the id
      */
@@ -70,6 +74,20 @@ public class LineProduct {
      */
     public void setAmount(int amount) {
         this.amount = amount;
+    }
+
+    /**
+     * @return Product return the product
+     */
+    public Product getProduct() {
+        return product;
+    }
+
+    /**
+     * @param product the product to set
+     */
+    public void setProduct(Product product) {
+        this.product = product;
     }
 
     /**

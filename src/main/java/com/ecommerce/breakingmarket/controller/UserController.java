@@ -63,7 +63,7 @@ public class UserController {
          */
         
         Optional<User> foundUser = marketUserService.getUserById(id);
-        
+        user.setId(id);
         return marketUserService.updateUser(user, foundUser);
 
     }

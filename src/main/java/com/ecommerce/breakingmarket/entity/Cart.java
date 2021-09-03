@@ -1,9 +1,7 @@
 package com.ecommerce.breakingmarket.entity;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.ArrayList;import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -16,8 +14,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotEmpty;
 
 import com.ecommerce.breakingmarket.utils.EnumGeneratedBy;
@@ -27,7 +24,6 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import org.hibernate.annotations.CreationTimestamp;
-import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 public class Cart {
@@ -52,6 +48,9 @@ public class Cart {
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDateTime registration = LocalDateTime.now();
 
+    @Column(name="total", nullable=false, updatable = true)
+    private Double total = 0.0;
+
     /*--Relationship--!!*/
     
     @JsonBackReference
@@ -66,19 +65,19 @@ public class Cart {
 
     public Cart(){}
     
-
-    public Cart(Long id, EnumGeneratedBy enumGeneratedBy, EnumState enumState, LocalDateTime registration, User user,
-            List<LineProduct> lineCart) {
+    public Cart(Long id, @NotEmpty EnumGeneratedBy enumGeneratedBy, @NotEmpty EnumState enumState,
+    @NotEmpty LocalDateTime registration, Double total, User user, List<LineProduct> lineProducts) {
         this.id = id;
         this.enumGeneratedBy = enumGeneratedBy;
         this.enumState = enumState;
         this.registration = registration;
+        this.total = total;
         this.user = user;
-        this.lineProducts = lineCart;
+        this.lineProducts = lineProducts;
     }
 
-    /*--Methods--!!*/
 
+    /*--Methods--!!*/
     /**
      * @return Long return the id
      */
@@ -122,7 +121,7 @@ public class Cart {
     }
 
     /**
-     * @return Date return the registration
+     * @return LocalDateTime return the registration
      */
     public LocalDateTime getRegistration() {
         return registration;
@@ -133,6 +132,20 @@ public class Cart {
      */
     public void setRegistration(LocalDateTime registration) {
         this.registration = registration;
+    }
+
+    /**
+     * @return Double return the total
+     */
+    public Double getTotal() {
+        return total;
+    }
+
+    /**
+     * @param total the total to set
+     */
+    public void setTotal(Double total) {
+        this.total = total;
     }
 
     /**
@@ -152,14 +165,14 @@ public class Cart {
     /**
      * @return List<LineProduct> return the lineProducts
      */
-    public List<LineProduct> getLineCart() {
+    public List<LineProduct> getLineProducts() {
         return lineProducts;
     }
 
     /**
      * @param lineProducts the lineProducts to set
      */
-    public void setLineCart(List<LineProduct> lineProducts) {
+    public void setLineProducts(List<LineProduct> lineProducts) {
         this.lineProducts = lineProducts;
     }
 
