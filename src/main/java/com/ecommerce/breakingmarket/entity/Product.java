@@ -182,6 +182,10 @@ public class Product {
         this.published = published;
     }
 
+    public Boolean getPublished(){
+        return published;
+    }
+
     /**
      * @return LocalDateTime return the registration
      */

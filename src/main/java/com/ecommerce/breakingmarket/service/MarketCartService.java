@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.ecommerce.breakingmarket.entity.Cart;
+import com.ecommerce.breakingmarket.entity.Invoice;
 import com.ecommerce.breakingmarket.entity.LineProduct;
 import com.ecommerce.breakingmarket.entity.Product;
 import com.ecommerce.breakingmarket.entity.User;
@@ -39,8 +40,8 @@ public class MarketCartService {
         /**
          * Creacion de un nuevo carrito
          */
-        
-        if(cart.getEnumState().equals(EnumState.ACTIVE)){
+        int flag = 0;
+        if(cart.getEnumState().equals(EnumState.CLOSED)){
             /**
              * Si el nuevo carrito pasa al estado cerrado
              */
@@ -52,12 +53,27 @@ public class MarketCartService {
             }else{
                 /**
                  * Se suma todo y se guarda
+                 * Primero
+                 * Verificamos que no se cargue un producto no publico
                  */
                 for(LineProduct line : cart.getLineProducts()){
-                    line.setCart(cart);
+                    if(line.getProduct().getPublished().equals(false)){
+                        flag = flag + 1;
+                    }
                 }
-                sumTotal(cart);
-                return cartRepository.save(cart);
+
+                if(flag == 0){
+                    //Ningun problema en los productos
+                    for(LineProduct line : cart.getLineProducts()){
+                        line.setCart(cart);
+                    }
+                    sumTotal(cart);
+                
+                    return cartRepository.save(cart);
+                }else{
+                    //Retorno de error.
+                    return null;
+                }
             }
         }else{
             /**
@@ -69,13 +85,24 @@ public class MarketCartService {
                 /**
                  * Si solo hay uno solo, se suma todo y se guarda
                  */
-
                 for(LineProduct line : cart.getLineProducts()){
-                    line.setCart(cart);
+                    if(line.getProduct().getPublished().equals(false)){
+                        flag = flag + 1;
+                    }
                 }
 
-                sumTotal(cart);
-                return cartRepository.save(cart);
+                if(flag == 0){
+                    //Ningun problema en los productos
+                    for(LineProduct line : cart.getLineProducts()){
+                        line.setCart(cart);
+                    }
+                    sumTotal(cart);
+                    return cartRepository.save(cart);
+                }else{
+                    //Retorno de error.
+                    return null;
+                }
+
             }else{
                 /**
                  * Sino no se guarda
@@ -142,7 +169,7 @@ public class MarketCartService {
     }
 
     public Cart updateCart(Cart cart, Cart foundCart){
-
+        int flag = 0;
         if(foundCart.getEnumState().equals(EnumState.ACTIVE)){
             //Solo se admiten cambios en carritos en activo
 
@@ -150,18 +177,32 @@ public class MarketCartService {
             /**
              * Sumamos el total actual
              */
-            cart.setTotal(0.0);
-            for(LineProduct line : cart.getLineProducts()){
-                line.setCart(cart);
-                lineProductRepository.save(line);
-                
-            }
-            sumTotal(cart);
-            //La fecha y usuario no se puede cambiar
-            cart.setRegistration(foundCart.getRegistration());
-            cart.setUser(foundCart.getUser());
 
-            if(cart.getEnumState().equals(EnumState.CLOSED) && cart.getLineProducts().size() == 0){
+            for(LineProduct line : cart.getLineProducts()){
+                if(line.getProduct().getPublished().equals(false)){
+                    flag = flag + 1;
+                }
+            }
+
+            if(flag == 0){
+                cart.setTotal(0.0);
+                //Ningun problema en los productos
+                for(LineProduct line : cart.getLineProducts()){
+                    line.setCart(cart);
+                    lineProductRepository.save(line);
+                }
+                sumTotal(cart);
+                //La fecha y usuario no se puede cambiar
+                cart.setRegistration(foundCart.getRegistration());
+                cart.setUser(foundCart.getUser());
+            }else{
+                //Retorno de error.
+                return null;
+            }
+
+
+
+            if(cart.getEnumState().equals(EnumState.CLOSED)){
                 /**
                  * Si actualizamos estado y sacamos todos los productos retornamos nulo o error
                  */

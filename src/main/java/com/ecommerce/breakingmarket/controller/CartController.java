@@ -71,9 +71,10 @@ public class CartController {
         marketCartService.deleteCart(cart.get()); 
     }  
 
-    @PutMapping("/update/{id}")
-    public Cart updateCart(@PathVariable Long id, 
-                                      @RequestBody Cart cart) {
+    @PutMapping("/user/{iduser}/update/{id}")
+    public Cart updateCart(@PathVariable(name="id") Long id, 
+                           @PathVariable(name="iduser") Long iduser,
+                            @RequestBody Cart cart) {
         /**
          * Actualizacion de carrito.
          *  -> Se puede aumentar la cantidad de productos y decrementar la cantidad de productos
@@ -82,10 +83,16 @@ public class CartController {
          *  
          *  **Nota : Solo se admite actualizacion de carritos activos.
          */
-        
         Cart foundCart = marketCartService.getCartById(id).get();
-        cart.setId(id);
-        return marketCartService.updateCart(cart, foundCart);
+
+
+        if(iduser.equals(foundCart.getUser().getId())){
+            //El dueño del carrito quiere actualizar su propio carrito.
+            cart.setId(id);
+            return marketCartService.updateCart(cart, foundCart);
+        }else{
+            return null;
+        }
     }
 
     @GetMapping("/{id}/alllines")

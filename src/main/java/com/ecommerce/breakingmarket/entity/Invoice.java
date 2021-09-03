@@ -28,8 +28,7 @@ public class Invoice {
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDateTime creationDate = LocalDateTime.now();
 
-    @NotEmpty
-    @Column(name = "observation", updatable = true, nullable = false, length=20)
+    @Column(name = "observation", updatable = true, nullable = true, length=20)
     @Size(max=20)
     private String observation;
 
@@ -93,6 +92,21 @@ public class Invoice {
      */
     public void setObservation(String observation) {
         this.observation = observation;
+    }
+
+    
+    /**
+     * @return Cart return the cart
+     */
+    public Cart getCart() {
+        return cart;
+    }
+
+    /**
+     * @param cart the cart to set
+     */
+    public void setCart(Cart cart) {
+        this.cart = cart;
     }
 
 }
