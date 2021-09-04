@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.ecommerce.breakingmarket.entity.Cart;
+import com.ecommerce.breakingmarket.entity.CategoryProduct;
 import com.ecommerce.breakingmarket.entity.LineProduct;
 import com.ecommerce.breakingmarket.entity.Product;
 import com.ecommerce.breakingmarket.repository.CartRepository;
@@ -177,6 +178,22 @@ public class MarketProductService {
 
     public ArrayList<Product> getAllProducts(){
         return (ArrayList<Product>) productRepository.findAll();
+    }
+
+    public ArrayList<Product> getProductsByCategory(String category){
+        ArrayList<Product> listaP = new ArrayList<>();
+
+        for (Product product : getAllProducts()) {
+                
+            for(CategoryProduct fcat : product.getCategory()){
+                if(fcat.getName().equals(category)){
+                    listaP.add(product);
+                }
+            }
+            
+        }
+        return listaP;
+
     }
 
     public ArrayList<Product> getAllProductsPublished(){

@@ -154,6 +154,15 @@ public class ProductController {
     
     }
 
+    @GetMapping("/bycategory")
+    public  ArrayList<Product> getByCategory(@RequestParam(value="name") String category){
+        /**
+         * Obtenemos una lista de productos dada una categoria
+         */
+        return marketProductService.getProductsByCategory(category);
+        
+    }
+
     
 
 
