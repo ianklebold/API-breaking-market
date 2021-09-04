@@ -180,6 +180,31 @@ public class MarketProductService {
         return (ArrayList<Product>) productRepository.findAll();
     }
 
+    public ArrayList<Product> getAllProductsPublished(){
+        return (ArrayList<Product>) productRepository.findByPublishedTrue();
+    }
+
+    public ArrayList<Product> getAllProductsNotPublished(){
+        return (ArrayList<Product>) productRepository.findByPublishedFalse();
+    }
+
+    public ArrayList<Product> findByNameContaining(String name){
+        return (ArrayList<Product>) productRepository.findByNameContaining(name);
+    }
+
+    public ArrayList<Product> findByPublishedTrueOrderByPriceDesc(){
+        return (ArrayList<Product>) productRepository.findByPublishedTrueOrderByPriceDesc();
+    }
+
+    public ArrayList<Product> findByPublishedTrueOrderByRegistrationDesc(){
+        return (ArrayList<Product>) productRepository.findByPublishedTrueOrderByRegistrationDesc();
+    }
+
+
+    public Optional<Product> getByInventoryCode(String inventoryCode){
+        return  productRepository.findByInventoryCode(inventoryCode);
+    }
+
     public Optional<Product> getProductById(Long id){
         return productRepository.findById(id);
     }

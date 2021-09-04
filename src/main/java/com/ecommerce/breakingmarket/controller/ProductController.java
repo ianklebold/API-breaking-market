@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -41,11 +43,78 @@ public class ProductController {
     }
 
     @GetMapping("/allproduct")
-    public  ArrayList<Product> getAllCategories(){
+    @ResponseStatus(HttpStatus.OK)
+    public  ArrayList<Product> getAllProducts(){
         /**
-         * Obtenemos todos los libros
+         * Obtenemos todos los productos
          */
         return marketProductService.getAllProducts();
+    }
+
+    @GetMapping("/allproductpublishied")
+    @ResponseStatus(HttpStatus.OK)
+    public  ArrayList<Product> getAllProductsPublished(){
+        /**
+         * Obtenemos todos los productos solo publicados
+         */
+        return marketProductService.getAllProductsPublished();
+    }
+
+    @GetMapping("/allproductnotpublishied")
+    @ResponseStatus(HttpStatus.OK)
+    public  ArrayList<Product> getAllProductsNotPublished(){
+        /**
+         * Obtenemos todos los productos no publicados
+         */
+        return marketProductService.getAllProductsNotPublished();
+    }
+    
+    @GetMapping("/allproductpublishied/orderprice")
+    @ResponseStatus(HttpStatus.OK)
+    public  ArrayList<Product> findByPublishedTrueOrderByPriceDesc(){
+        /**
+         * Obtenemos todos los productos publicados y por orden de precios
+         */
+        return marketProductService.findByPublishedTrueOrderByPriceDesc();
+    }
+
+    @GetMapping("/allproductpublishied/orderdate")
+    @ResponseStatus(HttpStatus.OK)
+    public  ArrayList<Product> findByPublishedTrueOrderByRegistrationDesc(){
+        /**
+         * Obtenemos todos los productos publicados y por orden de fecha
+         */
+        return marketProductService.findByPublishedTrueOrderByRegistrationDesc();
+    }
+
+    @GetMapping("/allproduct/product")
+    @ResponseStatus(HttpStatus.OK)
+    public  ArrayList<Product> findByNameContaining(@RequestParam(value="name") String name){
+        /**
+         * Obtenemos productos que contengan una palabra
+         */
+        return marketProductService.findByNameContaining(name);
+    }
+    
+
+    @GetMapping("/allproduct/inventorycode")
+    public  ResponseEntity<?> getByInventoryCode(@RequestParam(value="name") String inventorycode){
+        /**
+         * Obtenemos un producto por su codigo de inventario
+         */
+        Optional<Product> product = marketProductService.getByInventoryCode(inventorycode);
+
+        if(product.isPresent()){
+
+            return ResponseEntity.ok()
+                .header("Estado de producto", "Producto : "+ product.get().getId() +" Se encontro exitosamente")
+                .body(product.get());
+        }else{
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .header("Estado de producto", "Codigo : "+ inventorycode +" No encontrado")
+                .body("Producto de codigo : "+ inventorycode + " No ha sido encontrado");
+        }
+        
     }
 
     @DeleteMapping("/delete/{id}")
