@@ -48,6 +48,7 @@ public class MarketCartService {
             if(cart.getLineProducts().size() == 0){
                 /**
                  * No existe carrito cerrado sin productos
+                 * retornamos error.
                  */
                 return null;
             }else{

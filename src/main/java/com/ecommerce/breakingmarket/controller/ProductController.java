@@ -7,6 +7,8 @@ import com.ecommerce.breakingmarket.entity.Product;
 import com.ecommerce.breakingmarket.service.MarketProductService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,11 +25,19 @@ public class ProductController {
     MarketProductService marketProductService;
 
     @PostMapping("/newproduct")
-    public Product newProduct(@RequestBody Product product){
+    public ResponseEntity<Product> newProduct(@RequestBody Product product){
         /**
          * Crear un nuevo producto
          */
-        return marketProductService.newProduct(product);
+        
+
+        if(marketProductService.newProduct(product) == null ){
+            return new ResponseEntity<>(product, HttpStatus.EXPECTATION_FAILED);
+        }else{
+            return new ResponseEntity<>(product, HttpStatus.CREATED);
+        }
+
+
     }
 
     @GetMapping("/allproduct")
@@ -39,18 +49,38 @@ public class ProductController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public void deleteProduct(@PathVariable(name="id") Long id){
+    public ResponseEntity<String> deleteProduct(@PathVariable(name="id") Long id){
+
         Optional<Product> product = marketProductService.getProductById(id);
-        marketProductService.deleteProduct(product.get());
+
+        if(product.isPresent()){
+            marketProductService.deleteProduct(product.get());
+            return new ResponseEntity<>("Producto "+id+" Eliminado con exito", 
+                                        HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>("ERROR : 404 Producto "+id+" No encontrado", 
+                                        HttpStatus.NOT_FOUND);
+        }
+
+
     }
 
     @PutMapping("/update/{id}")
-    public Product updateProduct(@PathVariable(name = "id") Long id, 
+    public  ResponseEntity<Product> updateProduct(@PathVariable(name = "id") Long id, 
     @RequestBody Product product){
         
         Optional<Product> foundproduct = marketProductService.getProductById(id);
         product.setId(id);
-        return marketProductService.updateProduct(product, foundproduct);
+
+
+
+
+        if(marketProductService.updateProduct(product, foundproduct)== null){
+            
+            return new ResponseEntity<>(product, HttpStatus.EXPECTATION_FAILED);
+        }else{
+            return new ResponseEntity<>(product, HttpStatus.OK);
+        }
     
     
     }

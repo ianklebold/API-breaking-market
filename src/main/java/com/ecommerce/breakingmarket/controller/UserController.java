@@ -29,21 +29,27 @@ public class UserController {
     
     @PostMapping("/newuser")
  
-    public ResponseEntity<User> postNewUser(@Valid @RequestBody User user) {
+    public ResponseEntity<?> postNewUser(@Valid @RequestBody User user) {
         /**
          * Para crear un nuevo usuario
          */
-         System.out.println("Estoy en el controller");
 
         if(marketUserService.newUser(user) == null){
 
-            return new ResponseEntity<>(user, HttpStatus.EXPECTATION_FAILED);
+            return ResponseEntity.status(HttpStatus.CONFLICT)
+                .header("Estado de usuario", "Usuario : "+ user.getId() +" Ha ocurrido un conflicto")
+                .body("Error en el procesamiento de datos");
+            
         }else{
-
-            return new ResponseEntity<>(user, HttpStatus.CREATED);
+            new ResponseEntity<>(user, HttpStatus.CONFLICT);
+            return ResponseEntity.ok()
+                .header("Estado de usuario", "Usuario : "+ user.getId() +" Creado exitosamente")
+                .body(user);
         }
 
     }
+
+    
 
     @GetMapping("/alluser")
     @ResponseStatus(HttpStatus.OK)
@@ -64,19 +70,22 @@ public class UserController {
         Optional<User> user = marketUserService.getUserById(id);
         if (user.isPresent()){
             marketUserService.deleteUser(user.get());
-            return new ResponseEntity<>("Usuario "+id+" Eliminado con exito", 
-                                        HttpStatus.OK);
+            
+            return ResponseEntity.ok()
+                .header("Estado de usuario", "Usuario : "+ user.get().getId() +" Ha sido eliminado")
+                .body("Usuario : "+ user.get().getId() + " Ha sido eliminado exitosamente");
             
         }else{
-            return new ResponseEntity<>("ERROR : 404 Usuario "+id+" No encontrado", 
-                                        HttpStatus.NOT_FOUND);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .header("Estado de usuario", "Usuario : "+ id +" No encontrado")
+                .body("Usuario : "+ id + " No ha sido encontrado");
 
         }
         
     }
 
     @PutMapping("/update/{id}")
-    public  ResponseEntity<User> updateUser(@PathVariable(name = "id") Long id, @RequestBody User user) {
+    public  ResponseEntity<?> updateUser(@PathVariable(name = "id") Long id, @RequestBody User user) {
         /**
          * Actualizar los datos de un usuario
          * 
@@ -88,10 +97,15 @@ public class UserController {
 
         if(marketUserService.updateUser(user, foundUser) == null){
 
-            return new ResponseEntity<>(user, HttpStatus.EXPECTATION_FAILED);
+            return ResponseEntity.status(HttpStatus.CONFLICT)
+                .header("Estado de usuario", "Usuario : "+ user.getId() +" Ha ocurrido un conflicto")
+                .body("Error en el procesamiento de datos");
+            
         }else{
-
-            return new ResponseEntity<>(user, HttpStatus.OK);
+            new ResponseEntity<>(user, HttpStatus.CONFLICT);
+            return ResponseEntity.ok()
+                .header("Estado de usuario", "Usuario : "+ user.getId() +" Actualizado exitosamente")
+                .body(user);
         }
 
     }

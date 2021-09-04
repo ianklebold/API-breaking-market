@@ -5,9 +5,11 @@ import java.util.List;
 import java.util.Optional;
 
 import com.ecommerce.breakingmarket.entity.Cart;
+import com.ecommerce.breakingmarket.entity.CategoryProduct;
 import com.ecommerce.breakingmarket.entity.LineProduct;
 import com.ecommerce.breakingmarket.entity.Product;
 import com.ecommerce.breakingmarket.repository.CartRepository;
+import com.ecommerce.breakingmarket.repository.CategoryRepository;
 import com.ecommerce.breakingmarket.repository.ProductRepository;
 import com.ecommerce.breakingmarket.repository.UserRepository;
 import com.ecommerce.breakingmarket.utils.EnumState;
@@ -24,6 +26,9 @@ public class MarketProductService {
     ProductRepository productRepository;
 
     @Autowired
+    CategoryRepository categoryRepository;
+
+    @Autowired
     CartRepository cartRepository;
 
     /* METHODS FOR Product!!! */
@@ -38,7 +43,13 @@ public class MarketProductService {
             //Error no se puede mandar una categoria distinta.
         }*/
 
-        return productRepository.save(product);
+        if(product.getDescription().length()>10){
+            return productRepository.save(product);
+        }else{
+            return null;
+        }
+
+        
     }
 
 
@@ -85,19 +96,23 @@ public class MarketProductService {
 
     public Product updateProduct(Product product, Optional<Product> foundProduct){
 
+        if(product.getDescription().length()<10){
+            return null;
+        }else{
         
-        if(product.getPrice() != foundProduct.get().getPrice()){
-            /**
-             * Metodo para actualizar precios de productos con producto actualizado
-             */
-            updateTotalCartForBooks(product, foundProduct);
+            if(product.getPrice() != foundProduct.get().getPrice()){
+                /**
+                 * Metodo para actualizar precios de productos con producto actualizado
+                 */
+                updateTotalCartForBooks(product, foundProduct);
+            }
+            
+            //Codigo de producto no se puede cambiar
+            product.setInventoryCode(foundProduct.get().getInventoryCode());
+            
+
+            return productRepository.save(product);
         }
-        
-        //Codigo de producto no se puede cambiar
-        product.setInventoryCode(foundProduct.get().getInventoryCode());
-
-        return productRepository.save(product);
-
     }
     
     public void updateTotalCartForBooks(Product product, Optional<Product> foundProduct){
