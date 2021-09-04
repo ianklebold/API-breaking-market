@@ -12,6 +12,8 @@ import com.ecommerce.breakingmarket.service.MarketProductService;
 import com.ecommerce.breakingmarket.service.MarketUserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -34,7 +36,7 @@ public class CartController {
     MarketCartService marketCartService;
 
     @PostMapping("/{id}/newcart")
-    public Cart cartNewCart(@PathVariable(name="id") Long id ,@RequestBody Cart cart){
+    public ResponseEntity<?> cartNewCart(@PathVariable(name="id") Long id ,@RequestBody Cart cart){
         /**
          * Creacion de un nuevo carrito.
          *  -> Se puede crear un carrito, cargar los productos y cerrarlo.
@@ -47,9 +49,41 @@ public class CartController {
 
         if(user.isPresent()){
             cart.setUser(user.get());
-            return marketCartService.newCart(cart);
+            Integer result = marketCartService.newCart(cart);
+            if(result.equals(-1)){
+
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .header("Estado de carrito", "Usuario : "+ id +" Ha ocurrido un conflicto")
+                .body("Error no se puede cerrar el carrito, intente desde /breakingmarket/v1/invoice/closecart");
+
+            }else{
+                if(result.equals(-2)){
+
+                    return ResponseEntity.status(HttpStatus.CONFLICT)
+                    .header("Estado de carrito", "Usuario : "+ id +" Ha ocurrido un conflicto")
+                    .body("Error no se puede crear carrito porque hay productos añadidos que no estan disponibles o no existen, porfavor acceda al catalogo de productos");
+
+                }else{
+                    if(result.equals(-3)){
+
+                        return ResponseEntity.status(HttpStatus.CONFLICT)
+                        .header("Estado de carrito", "Usuario : "+ id +" Ha ocurrido un conflicto")
+                        .body("Error no se puede crear carrito porque existe dos en estado ACTIVO, porfavor acceda a su listado de carritos");
+
+                    }else{
+                        
+
+                        return ResponseEntity.status(HttpStatus.CREATED)
+                        .header("Estado de carrito", "Usuario : "+ id +" Carrito creado con exito")
+                        .body("Carrito guardado.");
+                    }
+                }
+            }
         }else{
-            return null;
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+            .header("Estado de carrito", "Usuario : "+ id +" Ha ocurrido un conflicto")
+            .body("Error no se encuntra el usuario : " + id);
+
         }
 
     }
@@ -62,17 +96,28 @@ public class CartController {
         return marketCartService.getAllCarts();
     }
 
-    @DeleteMapping("/delete/{id}")
-    public void deleteCart(@PathVariable(name="id") Long id ){
+    @DeleteMapping("/user/delete/{iduser}/{id}")
+    public ResponseEntity<String> deleteCart(@PathVariable(name="id") Long id, @PathVariable(name="iduser") Long iduser ){
         /**
          * Eliminamos un carrito
          */
         Optional<Cart> cart = marketCartService.getCartById(id);
-        marketCartService.deleteCart(cart.get()); 
+        if(iduser.equals(cart.get().getUser().getId())){
+            marketCartService.deleteCart(cart.get());
+
+            return ResponseEntity.ok()
+                .header("Estado de carrito", "Carrito : "+ id +" Se ha eliminado correctamente")
+                .body("El carrito se ha eliminado satisfactoriamente"); 
+        }else{
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                .header("Estado de carrito", "Carrito : "+ id +" No se puede completar solicitud")
+                .body("El carrito no pertenece al id : "+ iduser);
+        }
+         
     }  
 
-    @PutMapping("/user/{iduser}/update/{id}")
-    public Cart updateCart(@PathVariable(name="id") Long id, 
+    @PutMapping("/user/update/{iduser}/{id}")
+    public ResponseEntity<?> updateCart(@PathVariable(name="id") Long id, 
                            @PathVariable(name="iduser") Long iduser,
                             @RequestBody Cart cart) {
         /**
@@ -89,9 +134,31 @@ public class CartController {
         if(iduser.equals(foundCart.getUser().getId())){
             //El dueño del carrito quiere actualizar su propio carrito.
             cart.setId(id);
-            return marketCartService.updateCart(cart, foundCart);
+            Integer result = marketCartService.updateCart(cart, foundCart);
+            if(result.equals(-1)){
+
+                
+                return ResponseEntity.status(HttpStatus.CONFLICT)
+                    .header("Estado de carrito", "Usuario : "+ id +" Ha ocurrido un conflicto")
+                    .body("Error no se puede crear carrito porque hay productos añadidos que no estan disponibles o no existen, porfavor acceda al catalogo de productos");
+            }else{
+                if(result.equals(-2)){
+
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                        .header("Estado de carrito", "Usuario : "+ id +" Ha ocurrido un conflicto")
+                        .body("Error no se puede cerrar el carrito, intente desde /breakingmarket/v1/invoice/closecart");
+
+                }else{
+                        //FoundCart para este punto ya es igual a cart, por lo tanto retorna el carrito actualizado
+                        return ResponseEntity.status(HttpStatus.CREATED)
+                        .header("Estado de carrito", "Usuario : "+ id +" Carrito creado con exito")
+                        .body(foundCart);
+                }
+            }
         }else{
-            return null;
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                .header("Estado de carrito", "Carrito : "+ id +" No se puede completar solicitud")
+                .body("El carrito no pertenece al id : "+ iduser);
         }
     }
 

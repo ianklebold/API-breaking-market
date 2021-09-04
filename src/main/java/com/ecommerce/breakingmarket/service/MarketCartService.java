@@ -36,85 +36,55 @@ public class MarketCartService {
 
     /* METHODS FOR CART!!! */
 
-    public Cart newCart(Cart cart){
+    public Integer newCart(Cart cart){
         /**
          * Creacion de un nuevo carrito
          */
         int flag = 0;
         if(cart.getEnumState().equals(EnumState.CLOSED)){
             /**
-             * Si el nuevo carrito pasa al estado cerrado
+             * Carrito no puede pasar a estado cerrado desde este
+             * EndPoint
              */
-            if(cart.getLineProducts().size() == 0){
-                /**
-                 * No existe carrito cerrado sin productos
-                 * retornamos error.
-                 */
-                return null;
-            }else{
-                /**
-                 * Se suma todo y se guarda
-                 * Primero
-                 * Verificamos que no se cargue un producto no publico
-                 */
-                for(LineProduct line : cart.getLineProducts()){
-                    if(line.getProduct().getPublished().equals(false)){
-                        flag = flag + 1;
-                    }
-                }
-
-                if(flag == 0){
-                    //Ningun problema en los productos
-                    for(LineProduct line : cart.getLineProducts()){
-                        line.setCart(cart);
-                    }
-                    sumTotal(cart);
-                
-                    return cartRepository.save(cart);
-                }else{
-                    //Retorno de error.
-                    return null;
-                }
-            }
+            return -1;
         }else{
             /**
              * Si el carrito esta en progreso
              * Controlamos que solo haya un carrito en progreso
              */
-
             if(controlStateCart(cart) == true){
                 /**
-                 * Si solo hay uno solo, se suma todo y se guarda
+                 * Ahora controlamos que solo haya producto publicados
                  */
                 for(LineProduct line : cart.getLineProducts()){
                     if(line.getProduct().getPublished().equals(false)){
                         flag = flag + 1;
                     }
                 }
-
                 if(flag == 0){
                     //Ningun problema en los productos
+                    //Se suma todo y se guarda
                     for(LineProduct line : cart.getLineProducts()){
                         line.setCart(cart);
                     }
                     sumTotal(cart);
-                    return cartRepository.save(cart);
+                    cartRepository.save(cart);
+                    return 0;
                 }else{
                     //Retorno de error.
-                    return null;
+                    return -2;
                 }
 
             }else{
                 /**
-                 * Sino no se guarda
+                 * Tiene mas de un carrito activo
                  */
-                return null;
+                return -3;
+                }
             }
-            
         }
         
-        
-    }
+    
 
     public Boolean controlStateCart(Cart cart){
         /**
@@ -169,7 +139,7 @@ public class MarketCartService {
         }
     }
 
-    public Cart updateCart(Cart cart, Cart foundCart){
+    public Integer updateCart(Cart cart, Cart foundCart){
         int flag = 0;
         if(foundCart.getEnumState().equals(EnumState.ACTIVE)){
             //Solo se admiten cambios en carritos en activo
@@ -198,26 +168,24 @@ public class MarketCartService {
                 cart.setUser(foundCart.getUser());
             }else{
                 //Retorno de error.
-                return null;
+                return -1;
             }
-
-
 
             if(cart.getEnumState().equals(EnumState.CLOSED)){
                 /**
                  * Si actualizamos estado y sacamos todos los productos retornamos nulo o error
                  */
-                return null;
+                return -2;
             }else{
                 /**
                  * Se guardan los cambios
                  */
-                System.out.println("Antes de actualizar!!!");
-                return cartRepository.save(cart);
+                cartRepository.save(cart);
+                return 0;
             }            
         }else{
             //Sino no se realizan cambios
-            return cartRepository.save(foundCart);
+            return -2;
         }
     }
 
