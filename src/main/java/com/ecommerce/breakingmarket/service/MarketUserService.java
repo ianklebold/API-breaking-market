@@ -1,5 +1,6 @@
 package com.ecommerce.breakingmarket.service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.regex.Matcher;
@@ -39,6 +40,12 @@ public class MarketUserService {
         return (ArrayList<User>) userRepository.findAll();
     }
 
+    public ArrayList<User> getUsersWhitDetails(){
+
+
+        return (ArrayList<User>) userRepository.findAll();
+    }
+
     public Optional<User> getUserById(Long id){
         return userRepository.findById(id);
     }
@@ -72,5 +79,16 @@ public class MarketUserService {
         System.out.println(matcher.matches());
         return matcher.matches();
     }
+
+    public ArrayList<User> findByCityLike(String city){
+
+        for (User usuario : (ArrayList<User>) userRepository.findByCityLike(city) ) {
+            usuario.setPassword(" ");
+            usuario.setCart(null);
+        }
+
+        return userRepository.findByCityLike(city);
+    }
+
 
 }

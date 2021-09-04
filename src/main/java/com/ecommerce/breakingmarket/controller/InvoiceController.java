@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.ecommerce.breakingmarket.entity.Cart;
 import com.ecommerce.breakingmarket.entity.Invoice;
+import com.ecommerce.breakingmarket.entity.LineProduct;
 import com.ecommerce.breakingmarket.service.MarketCartService;
 import com.ecommerce.breakingmarket.service.MarketInvoiceService;
 import com.ecommerce.breakingmarket.utils.EnumState;
@@ -63,6 +64,11 @@ public class InvoiceController{
     @GetMapping("/allinvoice")
     public ArrayList<Invoice> getAllInvoice(){
         return marketInvoiceService.getAllInvoice();
+    }
+
+    @GetMapping("/alllines/{id}")
+    public ArrayList<LineProduct> getAllLineProducts(@PathVariable Long id){
+        return marketInvoiceService.getAllLineProducts(id);
     }
 
 

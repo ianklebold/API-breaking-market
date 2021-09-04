@@ -1,6 +1,15 @@
 package com.ecommerce.breakingmarket.controller;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 import java.util.Optional;
 
 import javax.validation.Valid;
@@ -17,6 +26,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -28,7 +38,6 @@ public class UserController {
     MarketUserService marketUserService;
     
     @PostMapping("/newuser")
- 
     public ResponseEntity<?> postNewUser(@Valid @RequestBody User user) {
         /**
          * Para crear un nuevo usuario
@@ -108,6 +117,22 @@ public class UserController {
                 .body(user);
         }
 
+    } 
+    
+    @GetMapping("/allusers/city")
+    @ResponseStatus(HttpStatus.OK)
+    public ArrayList<User> findByCityLike(@RequestParam(value="name") String city){
+        return marketUserService.findByCityLike(city);
     }
+
+    @GetMapping("/alluserextended")
+    @ResponseStatus(HttpStatus.OK)
+    public ArrayList<User> getUsersWhitDetails() {
+        /**
+         * Obtener todos los usuarios con sus detalles
+         */
+        return marketUserService.getUsersWhitDetails();
+    }
+
     
 }
