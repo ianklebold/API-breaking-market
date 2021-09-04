@@ -1,0 +1,982 @@
+{
+	"info": {
+		"_postman_id": "929d82a7-878e-44dc-86d0-90b26e2130c3",
+		"name": "TestApiBrMarket",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Test User",
+			"item": [
+				{
+					"name": "Get all User",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/breakingmarket/v1/user/alluser",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"breakingmarket",
+								"v1",
+								"user",
+								"alluser"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create new user",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\":\"Santiago\",\n    \"surname\":\"Klebold\",\n    \"email\":\"iancarp@gmail.com\",\n    \"password\":\"aswqweassdasd\",\n    \"city\":\"Resistencia\",\n    \"country\":\"Argentina\",\n    \"state\":\"Chaco\"\n\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/breakingmarket/v1/user/newuser",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"breakingmarket",
+								"v1",
+								"user",
+								"newuser"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete User",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/breakingmarket/v1/user/delete/3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"breakingmarket",
+								"v1",
+								"user",
+								"delete",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update User",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n        \"name\": \"Ian Santiago\",\n        \"surname\": \"Fernández\",\n        \"email\": \"elklebold@gmail.com\",\n        \"password\": \"iancarnivor\",\n        \"cart\": null,\n        \"city\": \"Resistencia\",\n        \"country\": \"Argentina\",\n        \"state\": \"Chaco\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/breakingmarket/v1/user/update/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"breakingmarket",
+								"v1",
+								"user",
+								"update",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Users By City",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/breakingmarket/v1/user/allusers/city?name=Resistencia",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"breakingmarket",
+								"v1",
+								"user",
+								"allusers",
+								"city"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "Resistencia"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all Users Whit Details",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/breakingmarket/v1/user/alluserextended",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"breakingmarket",
+								"v1",
+								"user",
+								"alluserextended"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all ordered by Date",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/breakingmarket/v1/user/allusers/ordereddate",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"breakingmarket",
+								"v1",
+								"user",
+								"allusers",
+								"ordereddate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all by date",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/breakingmarket/v1/user/allusers/date?name=2021-09-03",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"breakingmarket",
+								"v1",
+								"user",
+								"allusers",
+								"date"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "2021-09-03"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get User by IdCart",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/breakingmarket/v1/user/userbycart/4",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"breakingmarket",
+								"v1",
+								"user",
+								"userbycart",
+								"4"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Test Category",
+			"item": [
+				{
+					"name": "GetAllCategories",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/breakingmarket/v1/category/allcategory",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"breakingmarket",
+								"v1",
+								"category",
+								"allcategory"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create new Category",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\":\"Technology\"\n\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/breakingmarket/v1/category/newcategory",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"breakingmarket",
+								"v1",
+								"category",
+								"newcategory"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete category",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/breakingmarket/v1/category/delete/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"breakingmarket",
+								"v1",
+								"category",
+								"delete",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update category",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\":\"Technology\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/breakingmarket/v1/category/update/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"breakingmarket",
+								"v1",
+								"category",
+								"update",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Test Product",
+			"item": [
+				{
+					"name": "GetAllProducts",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/breakingmarket/v1/product/allproduct",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"breakingmarket",
+								"v1",
+								"product",
+								"allproduct"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create new product",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\":\"Pelota de futbol\",\n    \"price\": 70.0,\n    \"inventoryCode\":\"LÑASW-2021-56492\",\n    \"description\":\"This is a amazing Teclado model 2020\",\n    \"published\":false\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/breakingmarket/v1/product/newproduct",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"breakingmarket",
+								"v1",
+								"product",
+								"newproduct"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete product",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/breakingmarket/v1/product/delete/3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"breakingmarket",
+								"v1",
+								"product",
+								"delete",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update product",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "    {\n        \"id\":1,\n        \"name\": \"Teclado Inalambrico\",\n        \"price\": 100.0,\n        \"inventoryCode\": \"WAZ-2021-56492\",\n        \"description\": \"This is a amazing Teclado model 2020\",\n        \"content\": \"Nuevo teclado inalambrico, no te lo podes perder\",\n        \"published\": true,\n        \"category\": [\n                {\n                    \"id\": 1,\n                    \"name\": \"Technology\"\n                }\n        ]\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/breakingmarket/v1/product/update/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"breakingmarket",
+								"v1",
+								"product",
+								"update",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get by name contained",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/breakingmarket/v1/product/allproduct/product?name=de",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"breakingmarket",
+								"v1",
+								"product",
+								"allproduct",
+								"product"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "de"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all published",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/breakingmarket/v1/product/allproductpublishied",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"breakingmarket",
+								"v1",
+								"product",
+								"allproductpublishied"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all not published",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/breakingmarket/v1/product/allproductnotpublishied",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"breakingmarket",
+								"v1",
+								"product",
+								"allproductnotpublishied"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get by inventory code",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/breakingmarket/v1/product/allproduct/inventorycode?name=WAZ-2021-56492",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"breakingmarket",
+								"v1",
+								"product",
+								"allproduct",
+								"inventorycode"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "WAZ-2021-56492"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all publishied and ord by price",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/breakingmarket/v1/product/allproductpublishied/orderprice",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"breakingmarket",
+								"v1",
+								"product",
+								"allproductpublishied",
+								"orderprice"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all publishied and order by date",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/breakingmarket/v1/product/allproductpublishied/orderdate",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"breakingmarket",
+								"v1",
+								"product",
+								"allproductpublishied",
+								"orderdate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All product by category",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/breakingmarket/v1/product/bycategory?name=Technology",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"breakingmarket",
+								"v1",
+								"product",
+								"bycategory"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "Technology"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Test Cart",
+			"item": [
+				{
+					"name": "New Cart",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"enumGeneratedBy\":\"WEB\",\n    \"enumState\" : \"ACTIVE\",\n    \"lineProducts\" : [\n        {\n            \"product\": {\n                \"id\": 1,\n                \"name\": \"Teclado Inalambrico\",\n                \"price\": 100.0,\n                \"inventoryCode\": \"WAZ-2021-56492\",\n                \"description\": \"This is a amazing Teclado model 2020\",\n                \"content\": \"Nuevo teclado inalambrico, no te lo podes perder\",\n                \"published\": true,\n                \"category\": [\n                    {\n                        \"id\": 1,\n                        \"name\": \"Technology\"\n                    }\n                ]\n            },\n           \"amount\":1\n    }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/breakingmarket/v1/cart/6/newcart",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"breakingmarket",
+								"v1",
+								"cart",
+								"6",
+								"newcart"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all carts",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/breakingmarket/v1/cart/allcart",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"breakingmarket",
+								"v1",
+								"cart",
+								"allcart"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete cart",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/breakingmarket/v1/cart/user/delete/6/9",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"breakingmarket",
+								"v1",
+								"cart",
+								"user",
+								"delete",
+								"6",
+								"9"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Form Update cart",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n        \"enumGeneratedBy\": \"WEB\",\n        \"enumState\": \"ACTIVE\",\n        \"total\": 100.0,\n        \"lineProducts\": [\n            {\n                \"id\": 12,\n                \"amount\": 1,\n                \"product\": {\n                    \"id\": 1,\n                    \"name\": \"Teclado Inalambrico\",\n                    \"price\": 100.0,\n                    \"inventoryCode\": \"WAZ-2021-56492\",\n                    \"description\": \"This is a amazing Teclado model 2020\",\n                    \"content\": \"Nuevo teclado inalambrico, no te lo podes perder\",\n                    \"published\": true,\n                    \"category\": [\n                        {\n                            \"id\": 1,\n                            \"name\": \"Technology\"\n                        }\n                    ]\n                }\n            },{\n            \"amount\": 4,\n            \"product\": {\n                \"id\": 2,\n                \"name\": \"Cascos Inalambricos\",\n                \"price\": 70.0,\n                \"inventoryCode\": \"ABC-2021-56492\",\n                \"description\": \"This is a amazing Teclado model 2020\",\n                \"content\": null,\n                \"published\": true,\n                \"category\": []\n            }\n           } \n        ]\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/breakingmarket/v1/cart/user/update/6/10",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"breakingmarket",
+								"v1",
+								"cart",
+								"user",
+								"update",
+								"6",
+								"10"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetAllLines",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/breakingmarket/v1/cart/1/alllines",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"breakingmarket",
+								"v1",
+								"cart",
+								"1",
+								"alllines"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Cart of Client by State",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/breakingmarket/v1/cart/allcart/1/status?name=CLOSED",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"breakingmarket",
+								"v1",
+								"cart",
+								"allcart",
+								"1",
+								"status"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "CLOSED"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Cart by State",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/breakingmarket/v1/cart/allcart/status?name=ACTIVE",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"breakingmarket",
+								"v1",
+								"cart",
+								"allcart",
+								"status"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "ACTIVE"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Carts by User",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/breakingmarket/v1/cart/allcart/4",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"breakingmarket",
+								"v1",
+								"cart",
+								"allcart",
+								"4"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Test Invoice",
+			"item": [
+				{
+					"name": "New Invoice",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"observation\":\"Todo en orden\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/breakingmarket/v1/invoice/closecart/5/7",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"breakingmarket",
+								"v1",
+								"invoice",
+								"closecart",
+								"5",
+								"7"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all invoices",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/breakingmarket/v1/invoice/allinvoice",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"breakingmarket",
+								"v1",
+								"invoice",
+								"allinvoice"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get invoice by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/breakingmarket/v1/invoice/allinvoice/user/1/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"breakingmarket",
+								"v1",
+								"invoice",
+								"allinvoice",
+								"user",
+								"1",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all invoices by User",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/breakingmarket/v1/invoice/allinvoice/user/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"breakingmarket",
+								"v1",
+								"invoice",
+								"allinvoice",
+								"user",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
