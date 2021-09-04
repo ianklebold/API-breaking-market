@@ -9,6 +9,8 @@ import com.ecommerce.breakingmarket.service.MarketInvoiceService;
 import com.ecommerce.breakingmarket.utils.EnumState;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,19 +29,33 @@ public class InvoiceController{
     MarketCartService marketCartService;
 
     @PostMapping("/closecart/{iduser}/{idcart}")
-    public Invoice newInvoice(@PathVariable(name = "iduser") Long iduser,
+    public ResponseEntity<?> newInvoice(@PathVariable(name = "iduser") Long iduser,
                                        @PathVariable(name = "idcart") Long idcart,
                                        @RequestBody Invoice invoice){
                                            
         Cart foundCart = marketCartService.getCartById(idcart).get();
 
         if(iduser.equals(foundCart.getUser().getId())){
+            
 
-            invoice.setCart(foundCart);
-            invoice.getCart().setEnumState(EnumState.CLOSED);
-            return marketInvoiceService.newInvoice(invoice);
+            if(foundCart.getLineProducts().size() == 0){
+                return ResponseEntity.status(HttpStatus.CONFLICT)
+                    .header("Estado de carrito", "Carrito : "+ idcart +" No se puede completar solicitud")
+                    .body("El carrito no se puede cerrar sin productos" );
+            }else{
+                invoice.setCart(foundCart);
+                invoice.getCart().setEnumState(EnumState.CLOSED);
+                marketInvoiceService.newInvoice(invoice);
+
+                return ResponseEntity.status(HttpStatus.CREATED)
+                    .header("Estado de carrito", "Carrito : "+ idcart +" Se completo correctamente la solicitud")
+                    .body(invoice);
+            }
+            
         }else{
-            return null;
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                .header("Estado de carrito", "Carrito : "+ idcart +" No se puede completar solicitud")
+                .body("El carrito no pertenece al id : "+ iduser);
         }
         
     }
