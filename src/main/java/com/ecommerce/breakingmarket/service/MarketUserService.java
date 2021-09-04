@@ -5,7 +5,9 @@ import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.ecommerce.breakingmarket.entity.Cart;
 import com.ecommerce.breakingmarket.entity.User;
+import com.ecommerce.breakingmarket.repository.CartRepository;
 import com.ecommerce.breakingmarket.repository.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,9 @@ public class MarketUserService {
     
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    CartRepository cartRepository;
 
     public User newUser(User user){
 
@@ -95,6 +100,18 @@ public class MarketUserService {
             usuario.setCart(null);
         }
         return userRepository.findByOrderByRegistration();
+    }
+
+
+    public Integer findByCart(Long idCart){
+        Optional<Cart> cart = cartRepository.findById(idCart);
+
+        
+        if(cart.isPresent()){
+            return 0;
+        }else{
+            return -1;
+        }
     }
 
 }

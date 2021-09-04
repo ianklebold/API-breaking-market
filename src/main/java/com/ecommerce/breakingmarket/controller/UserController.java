@@ -8,7 +8,9 @@ import java.util.Optional;
 
 import javax.validation.Valid;
 
+import com.ecommerce.breakingmarket.entity.Cart;
 import com.ecommerce.breakingmarket.entity.User;
+import com.ecommerce.breakingmarket.service.MarketCartService;
 import com.ecommerce.breakingmarket.service.MarketUserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +32,9 @@ public class UserController {
 
     @Autowired
     MarketUserService marketUserService;
+
+    @Autowired
+    MarketCartService marketCartService;
     
     @PostMapping("/newuser")
     public ResponseEntity<?> postNewUser(@Valid @RequestBody User user) {
@@ -105,7 +110,7 @@ public class UserController {
                 .body("Error en el procesamiento de datos");
             
         }else{
-            new ResponseEntity<>(user, HttpStatus.CONFLICT);
+            
             return ResponseEntity.ok()
                 .header("Estado de usuario", "Usuario : "+ user.getId() +" Actualizado exitosamente")
                 .body(user);
@@ -151,6 +156,31 @@ public class UserController {
          */
         return marketUserService.getUsersWhitDetails();
     }
+
+    @GetMapping("/userbycart/{idcart}")
+    public ResponseEntity<?> findByRegistration(@PathVariable(name = "idcart") Long idcart){
+       
+        Integer control = marketUserService.findByCart(idcart);
+
+        
+                if(control == -1){
+                    return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .header("Estado de carrito", "Carrito : "+ idcart +" Ha ocurrido un error")
+                    .body("Este carrito solicitado no existe");
+                    
+                }else{
+                    Optional<Cart> cart = marketCartService.getCartById(idcart);
+                    User usuario = marketUserService.getUserById(cart.get().getUser().getId()).get();
+                    usuario.setPassword(" ");
+                    usuario.setCart(null);
+                    return ResponseEntity.ok()
+                    .header("Estado de usuario", "Usuario : "+ idcart +" Usuario encontrado exitosamente")
+                    .body(usuario);
+                    
+                }
+        }
+
+
 
     
 }
