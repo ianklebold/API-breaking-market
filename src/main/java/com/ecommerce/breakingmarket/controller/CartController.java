@@ -10,6 +10,7 @@ import com.ecommerce.breakingmarket.entity.User;
 import com.ecommerce.breakingmarket.service.MarketCartService;
 import com.ecommerce.breakingmarket.service.MarketProductService;
 import com.ecommerce.breakingmarket.service.MarketUserService;
+import com.ecommerce.breakingmarket.utils.EnumState;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,6 +22,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -89,11 +92,69 @@ public class CartController {
     }
 
     @GetMapping("/allcart")
+    @ResponseStatus(HttpStatus.OK)
     public ArrayList<Cart> getAllCarts() {
         /**
          * Obtener todos los carritos
          */
         return marketCartService.getAllCarts();
+    }
+
+    @GetMapping("/allcart/status")
+    public ResponseEntity<?> findByEnumState(@RequestParam(value="name") EnumState enumState) {
+        /**
+         * Obtener todos los carritos con un estado de CLOSED O ACTIVE
+         */
+        if(enumState.equals(enumState.ACTIVE) || enumState.equals(enumState.CLOSED)){
+           
+            return ResponseEntity.ok()
+                .header("Estado de busqueda", "Estado : "+ enumState +" Encontrado con exito")
+                .body(marketCartService.findByEnumState(enumState));
+        }else{
+            return ResponseEntity.status(HttpStatus.CONFLICT)
+                .header("Estado de busqueda", "Estado : "+ enumState +" No se encontró")
+                .body("Parece que no existe ese estado. Pruebe con ACTIVE o CLOSED");
+        }
+        
+    }
+
+    @GetMapping("/allcart/{id}")
+    public ResponseEntity<?> findByUser(@PathVariable(name="id") Long id){
+        ArrayList<Cart> control = marketCartService.findByUser(id);
+        if(control == null){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .header("Estado de busqueda", "Usuario : "+ id +" No existe")
+                    .body("Parece que no existe ese usuario");
+        }else{
+            return ResponseEntity.ok()
+                .header("Estado de busqueda", "Carritos de id : "+ id +" Encontrado con exito")
+                .body((control));
+        }
+        
+    }
+
+    @GetMapping("/allcart/{id}/status")
+    public ResponseEntity<?> findByUserAndEnumState(@PathVariable(name="id") Long id ,@RequestParam(value="name") EnumState enumState){
+        
+        if((enumState.equals(enumState.ACTIVE) || enumState.equals(enumState.CLOSED)) ){
+            ArrayList<Cart> control = marketCartService.findByUserAndState(id, enumState);
+            if(control == null){
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .header("Estado de busqueda", "Usuario : "+ id +" No existe")
+                    .body("Parece que no existe ese usuario");
+            }else{
+                return ResponseEntity.ok()
+                .header("Estado de busqueda", "Estado : "+ enumState +" Encontrado con exito")
+                .body((control));
+
+            }
+
+        }else{
+            return ResponseEntity.status(HttpStatus.CONFLICT)
+                .header("Estado de busqueda", "Estado : "+ enumState +" No se encontró")
+                .body("Parece que no existe ese estado. Pruebe con ACTIVE o CLOSED");
+        }
+
     }
 
     @DeleteMapping("/user/delete/{iduser}/{id}")

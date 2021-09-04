@@ -199,15 +199,44 @@ public class MarketCartService {
         return productRepository.findById(id);
     }
 
-    public ArrayList<Cart> getAllCartsWhitBooks(){
-        return (ArrayList<Cart>) cartRepository.findAll();
-    }
-
 
     public ArrayList<Cart> getAllCarts(){
         return (ArrayList<Cart>) cartRepository.findAll();
 
     }
+
+    public ArrayList<Cart> findByEnumState(EnumState enumState){
+        return (ArrayList<Cart>) cartRepository.findByEnumState(enumState);
+
+    }
+
+    public ArrayList<Cart> findByUser(Long id){
+
+        Optional<User> user = userRepository.findById(id);
+        if(user.isPresent()){
+            return (ArrayList<Cart>) cartRepository.findByUser(user.get());
+        }else{
+            return null;
+        }
+        
+
+    }
+
+    public ArrayList<Cart> findByUserAndState(Long id, EnumState enumState){
+        ArrayList<Cart> carts = new ArrayList<Cart>();
+
+        if(findByUser(id) != null){
+            for (Cart cart : findByUser(id)) {
+                if(cart.getEnumState().equals(enumState)){
+                    carts.add(cart);
+                }
+            }
+            return carts;
+        }else{
+            return null;
+        }
+    }
+
 
     public Optional<Cart> getCartById(Long id){
         return cartRepository.findById(id);
