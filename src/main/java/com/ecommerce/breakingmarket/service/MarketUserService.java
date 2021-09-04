@@ -89,5 +89,12 @@ public class MarketUserService {
         return userRepository.findByCityLike(city);
     }
 
+    public ArrayList<User> findByOrderByRegistration(){
+        for (User usuario : (ArrayList<User>) userRepository.findByOrderByRegistration() ) {
+            usuario.setPassword(" ");
+            usuario.setCart(null);
+        }
+        return userRepository.findByOrderByRegistration();
+    }
 
 }

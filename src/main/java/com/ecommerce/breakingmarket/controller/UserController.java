@@ -1,6 +1,8 @@
 package com.ecommerce.breakingmarket.controller;
 
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -115,6 +117,30 @@ public class UserController {
     @ResponseStatus(HttpStatus.OK)
     public ArrayList<User> findByCityLike(@RequestParam(value="name") String city){
         return marketUserService.findByCityLike(city);
+    }
+
+    @GetMapping("/allusers/ordereddate")
+    @ResponseStatus(HttpStatus.OK)
+    public ArrayList<User> findByOrderByRegistration(){
+        return marketUserService.findByOrderByRegistration();
+    }
+
+    @GetMapping("/allusers/date")
+    @ResponseStatus(HttpStatus.OK)
+    public ArrayList<User> findByRegistration(@RequestParam(value="name") String date){
+        ArrayList<User> usuarios = new ArrayList<>(); 
+        DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE;
+
+        for (User user : marketUserService.findByOrderByRegistration()) {
+            String formattedDateTime = user.getRegistration().format(formatter);
+
+            if(formattedDateTime.equals(date)){
+                usuarios.add(user);
+            }
+        }
+
+        return usuarios;
+
     }
 
     @GetMapping("/alluserextended")
