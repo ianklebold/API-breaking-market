@@ -1,14 +1,16 @@
 package com.ecommerce.breakingmarket.service;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Optional;
 
 import com.ecommerce.breakingmarket.entity.Invoice;
 import com.ecommerce.breakingmarket.entity.LineProduct;
+import com.ecommerce.breakingmarket.entity.User;
 import com.ecommerce.breakingmarket.repository.InvoiceRepository;
 import com.ecommerce.breakingmarket.repository.LineProductRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Service;
 
 @Service
@@ -36,6 +38,16 @@ public class MarketInvoiceService {
     public ArrayList<Invoice> getAllInvoice(){
         return (ArrayList<Invoice>) invoiceRepository.findAll();
     }
+
+    public ArrayList<Invoice> getAllInvoiceByUser(User user){
+
+        return (ArrayList<Invoice>) invoiceRepository.findByCartIn(user.getCart());
+    }
+
+    public Optional<Invoice> getInvoiceById(Long id){
+        return invoiceRepository.findById(id);
+    }
+
 
     public ArrayList<LineProduct> getAllLineProducts(Long id){
         return (ArrayList<LineProduct>) lineProductRepository.findByCart(id);

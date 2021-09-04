@@ -1,11 +1,9 @@
 package com.ecommerce.breakingmarket.service;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 import com.ecommerce.breakingmarket.entity.Cart;
-import com.ecommerce.breakingmarket.entity.Invoice;
 import com.ecommerce.breakingmarket.entity.LineProduct;
 import com.ecommerce.breakingmarket.entity.Product;
 import com.ecommerce.breakingmarket.entity.User;
